@@ -15,7 +15,7 @@ export function buildResponse(request: RequestData) : string {
         if (fs.existsSync(absolutePath) && fs.statSync(absolutePath).isFile()){
                 try {
                     const data = fs.readFileSync(absolutePath, 'utf-8');
-                    return `${request.version} 200 OK\r\n\r\n${data}`;
+                    return `${request.version} 200 OK\r\nContent-Type: text/html\r\n\r\n${data}`;
                 }
                 catch (error) {
                     return `${request.version} 500 Internal Server Error\r\n\r\nError reading file: ${error}`;

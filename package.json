@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
-    "test": "node --require ts-node/register --test tests/request.test.ts"
+    "test": "node --require ts-node/register --test tests/*"
   },
   "keywords": [],
   "author": "",
