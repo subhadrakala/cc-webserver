@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { RequestData } from './request.js';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 export function buildResponse(request: RequestData) : string {
 
@@ -9,6 +10,13 @@ export function buildResponse(request: RequestData) : string {
         filePath += 'index.html'
     }
     const absolutePath = path.resolve(filePath);
+    if (request.path.includes('/cgi-bin/')) {
+        const res = spawnSync(absolutePath, [], { encoding: 'utf-8'});
+        let [headers, ...resbody] = res.stdout.split('\n\n');
+        let formattedheaders = headers.replace(/\n/g, '\r\n');
+        return `${request.version} 200 OK\r\n${formattedheaders}\r\n\r\n${resbody.join('\n\n')}`;
+    }
+
     const wwwDir = path.resolve('./www');
 
     if (absolutePath.startsWith(wwwDir)) {
